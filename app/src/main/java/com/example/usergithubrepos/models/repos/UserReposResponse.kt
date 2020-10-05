@@ -72,7 +72,6 @@ data class UserReposResponse (
 	@SerializedName("archived") val archived : Boolean,
 	@SerializedName("disabled") val disabled : Boolean,
 	@SerializedName("open_issues_count") val open_issues_count : Int,
-	@SerializedName("license") val license : String,
 	@SerializedName("forks") val forks : Int,
 	@SerializedName("open_issues") val open_issues : Int,
 	@SerializedName("watchers") val watchers : Int,
