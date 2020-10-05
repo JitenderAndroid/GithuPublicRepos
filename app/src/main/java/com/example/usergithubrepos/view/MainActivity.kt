@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val mUserUseCase : UserUseCase by inject()
     private val mBaseViewModelFactory : BaseViewModelFactory = BaseViewModelFactory(Dispatchers.Main, Dispatchers.IO, mUserUseCase)
     private val  TAG = MainActivity::class.simpleName
+    private var previousUserName = ""
     private val mViewModel : UserViewModel by lazy {
         ViewModelProviders.of(this, mBaseViewModelFactory).get(UserViewModel::class.java)
     }
@@ -39,8 +40,16 @@ class MainActivity : AppCompatActivity() {
         setEditTextListener()
         observeData()
         button_repo.setOnClickListener {
+
+            var passedUsername=  ""
+            if (!previousUserName.equals(edit_username.text.toString().trim())) {
+                passedUsername = previousUserName
+            } else {
+                passedUsername = edit_username.text.toString().trim()
+            }
+
             startActivity(Intent(this, ReposListActivity::class.java)
-                .putExtra("data", edit_username.text.toString().trim()))
+                .putExtra("data", passedUsername))
         }
     }
 
@@ -74,6 +83,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setData(profileResponse: ProfileResponse?) {
         profileResponse?.let {
+
+            previousUserName = edit_username.text.toString().trim()
 
             if (!profileResponse.avatar_url.isNullOrEmpty())
                Picasso.get().load(profileResponse.avatar_url).into(image_profile)
